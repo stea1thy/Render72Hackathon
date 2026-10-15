@@ -2,6 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "render72hackathon",
   "compatibility_date": "2026-10-12",
+  "build": {
+    "command": "pnpm run build"
+  },
   "assets": {
     "directory": "./out",
     "not_found_handling": "404-page",
