@@ -47,36 +47,36 @@ export function CountdownBadge({ deadlineIso }: CountdownBadgeProps) {
   if (!deadlineIso) return null;
   if (!timeLeft) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-zinc-500">
-        <Clock className="w-3 h-3 text-zinc-600" />
-        <span>Calculating deadline...</span>
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-pixel-clean text-[#D8E2FF]/60">
+        <Clock className="w-3 h-3 text-[#A5E8FF]" />
+        <span>CALCULATING...</span>
       </span>
     );
   }
 
   if (timeLeft.isExpired) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-mono text-rose-400 bg-rose-500/10 border border-rose-500/20 font-medium">
-        <Clock className="w-3 h-3 text-rose-400" />
-        <span>Registration closed</span>
+      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10px] font-pixel-clean text-[#FFFDF2] bg-[#E63E9B] border-2 border-[#100526] font-bold shadow-[2px_2px_0px_#090318]">
+        <Clock className="w-3 h-3 text-white" />
+        <span>REGISTRATION CLOSED</span>
       </span>
     );
   }
 
   const formatted =
     timeLeft.days > 0
-      ? `${timeLeft.days}d ${timeLeft.hours.toString().padStart(2, "0")}h`
-      : `${timeLeft.hours.toString().padStart(2, "0")}h ${timeLeft.minutes
+      ? `${timeLeft.days}D ${timeLeft.hours.toString().padStart(2, "0")}H`
+      : `${timeLeft.hours.toString().padStart(2, "0")}H ${timeLeft.minutes
           .toString()
-          .padStart(2, "0")}m ${timeLeft.seconds.toString().padStart(2, "0")}s`;
+          .padStart(2, "0")}M ${timeLeft.seconds.toString().padStart(2, "0")}S`;
 
   return (
     <span
-      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/20 tabular-nums select-none"
+      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10px] font-pixel-clean text-[#FFF3B8] bg-[#140930] border border-[#FFF3B8]/40 tabular-nums select-none shadow-[2px_2px_0px_#090318]"
       title={`Closes at ${deadlineIso}`}
     >
-      <Clock className="w-3 h-3 text-amber-400 shrink-0" />
-      <span className="tracking-tight">{formatted} left to register</span>
+      <Clock className="w-3 h-3 text-[#FFF3B8] shrink-0" />
+      <span className="tracking-tight">{formatted} LEFT TO REGISTER</span>
     </span>
   );
 }

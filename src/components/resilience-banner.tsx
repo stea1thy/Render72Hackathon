@@ -66,18 +66,18 @@ export function ResilienceBanner({ onRetry, isFetching = false }: ResilienceBann
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/90 border border-rose-500/20 text-rose-300 backdrop-blur-md"
+          className="flex items-center justify-between p-3.5 rounded-none bg-[#1B0E40] border-2 border-[#E63E9B] text-[#FFFDF2] shadow-[4px_4px_0px_#090318] font-mono text-xs"
         >
           <div className="flex items-center gap-2.5">
-            <WifiOff className="w-4 h-4 text-rose-400 shrink-0" />
-            <span className="font-medium">
-              Offline Mode — You&apos;re browsing cached event data. Reconnecting when internet is restored.
+            <WifiOff className="w-4 h-4 text-[#E63E9B] shrink-0" />
+            <span>
+              Offline Mode — Browsing cached event data. Reconnecting when internet is restored.
             </span>
           </div>
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-3 py-1.5 bg-white text-zinc-950 font-semibold text-xs rounded-lg hover:bg-zinc-200 transition-colors shrink-0"
+              className="px-3 py-1 bg-[#FFFDF2] text-[#1B0E40] border border-[#100526] font-pixel-clean font-bold text-xs rounded-none shadow-[2px_2px_0px_#E63E9B] hover:bg-[#FFE699] shrink-0 cursor-pointer"
             >
               Reconnect
             </button>
@@ -90,9 +90,9 @@ export function ResilienceBanner({ onRetry, isFetching = false }: ResilienceBann
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center gap-2.5 p-3.5 rounded-xl bg-zinc-900/90 border border-amber-500/20 text-amber-300 backdrop-blur-md"
+          className="flex items-center gap-2.5 p-3.5 rounded-none bg-[#1B0E40] border-2 border-[#FFF3B8] text-[#FFF3B8] shadow-[4px_4px_0px_#090318] font-mono text-xs"
         >
-          <Clock className="w-4 h-4 text-amber-400 animate-spin shrink-0" />
+          <Clock className="w-4 h-4 text-[#FFF3B8] animate-spin shrink-0" />
           <span>
             Connecting to server — live updates are taking longer than usual. Still attempting to sync...
           </span>

@@ -32,19 +32,19 @@ export function EventsPageClient({
       <ResilienceBanner isFetching={isFetching} onRetry={() => refetch()} />
 
       {error && (!events || events.length === 0) ? (
-        <div className="p-8 rounded-2xl bg-zinc-900/40 border border-rose-500/20 text-center space-y-4">
-          <AlertCircle className="w-8 h-8 text-rose-400 mx-auto" />
-          <h2 className="font-bold text-xl text-white">
+        <div className="p-8 rounded-none bg-[#1B0E40] border-[3px] border-[#E63E9B] shadow-[5px_5px_0px_#090318] text-center space-y-4">
+          <AlertCircle className="w-8 h-8 text-[#E63E9B] mx-auto" />
+          <h2 className="font-pixel-block text-lg text-white">
             Unable to Load Events
           </h2>
-          <p className="text-xs text-zinc-400 max-w-md mx-auto">
+          <p className="font-mono text-xs text-[#D8E2FF]/80 max-w-md mx-auto">
             {error instanceof Error
               ? error.message
               : "The events service is temporarily unreachable. Please check your connection or retry."}
           </p>
           <button
             onClick={() => refetch()}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-zinc-950 font-semibold text-xs hover:bg-zinc-200 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-[#FFFDF2] text-[#1B0E40] border-2 border-[#100526] font-pixel-clean font-bold text-xs uppercase shadow-[3px_3px_0px_#E63E9B] hover:bg-[#FFE699] active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Try Again

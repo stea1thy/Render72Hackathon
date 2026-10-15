@@ -22,12 +22,12 @@ export function ShareButton({ eventName }: { eventName: string }) {
     <button
       onClick={handleShare}
       type="button"
-      className="w-full py-2.5 rounded-lg bg-zinc-900 border border-white/10 text-zinc-300 hover:text-white hover:border-white/20 text-xs font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer"
+      className="w-full py-2.5 rounded-none bg-[#110626] border-2 border-[#492191] text-[#D8E2FF] hover:text-white hover:border-[#FFF3B8] font-pixel-clean text-xs font-bold uppercase flex items-center justify-center gap-2 shadow-[3px_3px_0px_#090318] active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer"
     >
       {copied ? (
         <>
-          <Check className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="text-emerald-400 font-medium">Link Copied</span>
+          <Check className="w-3.5 h-3.5 text-[#A5E8FF]" />
+          <span className="text-[#A5E8FF]">Link Copied</span>
         </>
       ) : (
         <>

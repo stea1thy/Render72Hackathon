@@ -12,8 +12,8 @@ export function KickoffCountdown() {
   }>({ days: 27, hours: 9, minutes: 29, seconds: 45 });
 
   useEffect(() => {
-    // Festival kickoff: November 10, 2026 09:00 IST
-    const targetDate = new Date("2026-11-10T09:00:00+05:30").getTime();
+    // Festival kickoff: October 16, 2026 10:00 IST
+    const targetDate = new Date("2026-10-16T10:00:00+05:30").getTime();
 
     const updateTimer = () => {
       const now = Date.now();
@@ -34,47 +34,47 @@ export function KickoffCountdown() {
   }, []);
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-zinc-900/60 border border-white/10 backdrop-blur-md">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-none bg-[#1B0E40] border-2 border-[#492191] shadow-[4px_4px_0px_#090318] select-none">
       {/* Label and pulse icon */}
-      <div className="flex flex-row items-center gap-2.5 text-xs font-mono text-zinc-300 font-medium border-b sm:border-b-0 sm:border-r border-white/10 pb-2 sm:pb-0 sm:pr-4">
-        <Clock className="w-4 h-4 text-emerald-400 animate-pulse shrink-0" />
-        <span className="tracking-wider uppercase">Registration Closes:</span>
+      <div className="flex flex-row items-center gap-2.5 text-xs font-pixel-clean text-[#FFF3B8] font-bold border-b sm:border-b-0 sm:border-r border-[#38208C]/50 pb-2 sm:pb-0 sm:pr-4">
+        <Clock className="w-4 h-4 text-[#E63E9B] shrink-0" />
+        <span className="tracking-wider uppercase">REGISTRATION CLOSES:</span>
       </div>
 
       {/* Horizontal flex row of countdown unit boxes with gaps */}
       <div className="flex flex-row items-center gap-2 sm:gap-3 font-mono tabular-nums">
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
-          <span className="font-semibold text-xl sm:text-2xl text-white leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#0E0624] border border-[#492191] rounded-none min-w-[55px]">
+          <span className="font-pixel-block text-base sm:text-lg text-[#FFFDF2] leading-none">
             {timeLeft.days.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-zinc-500 font-medium mt-1">DAYS</span>
+          <span className="text-[9px] text-[#A5E8FF] font-pixel-clean mt-1.5">DAYS</span>
         </div>
 
-        <span className="text-zinc-600 font-bold text-xl leading-none select-none">:</span>
+        <span className="text-[#38208C] font-bold text-lg leading-none select-none">:</span>
 
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
-          <span className="font-semibold text-xl sm:text-2xl text-white leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#0E0624] border border-[#492191] rounded-none min-w-[55px]">
+          <span className="font-pixel-block text-base sm:text-lg text-[#FFFDF2] leading-none">
             {timeLeft.hours.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-zinc-500 font-medium mt-1">HOURS</span>
+          <span className="text-[9px] text-[#A5E8FF] font-pixel-clean mt-1.5">HOURS</span>
         </div>
 
-        <span className="text-zinc-600 font-bold text-xl leading-none select-none">:</span>
+        <span className="text-[#38208C] font-bold text-lg leading-none select-none">:</span>
 
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
-          <span className="font-semibold text-xl sm:text-2xl text-white leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#0E0624] border border-[#492191] rounded-none min-w-[55px]">
+          <span className="font-pixel-block text-base sm:text-lg text-[#FFFDF2] leading-none">
             {timeLeft.minutes.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-zinc-500 font-medium mt-1">MINS</span>
+          <span className="text-[9px] text-[#A5E8FF] font-pixel-clean mt-1.5">MINS</span>
         </div>
 
-        <span className="text-zinc-600 font-bold text-xl leading-none select-none">:</span>
+        <span className="text-[#38208C] font-bold text-lg leading-none select-none">:</span>
 
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
-          <span className="font-semibold text-xl sm:text-2xl text-emerald-400 leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#0E0624] border border-[#492191] rounded-none min-w-[55px]">
+          <span className="font-pixel-block text-base sm:text-lg text-[#E63E9B] leading-none">
             {timeLeft.seconds.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-zinc-500 font-medium mt-1">SECS</span>
+          <span className="text-[9px] text-[#E63E9B] font-pixel-clean mt-1.5">SECS</span>
         </div>
       </div>
     </div>

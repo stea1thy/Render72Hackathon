@@ -1,55 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap');
 @import "tailwindcss";
 
 :root {
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+  --font-pixel-block: 'Press Start 2P', monospace;
+  --font-pixel-clean: 'Silkscreen', monospace;
 
-  --color-background: #09090b;
-  --color-surface: #121215;
-  --color-surface-hover: #18181b;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.16);
+  --color-background: #120829;
+  --color-surface: #1B0E40;
+  --color-surface-hover: #2D1666;
+  --color-border: #492191;
+  --color-border-hover: #FFF3B8;
 
-  --color-emerald-accent: #10b981;
-  --color-blue-accent: #3b82f6;
+  --color-cyan-accent: #A5E8FF;
+  --color-pink-accent: #E63E9B;
+  --color-gold-accent: #FFF3B8;
 
-  --color-text-primary: #f4f4f5;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
+  --color-text-primary: #FFFDF2;
+  --color-text-secondary: #D8E2FF;
+  --color-text-muted: #8E7FA8;
 }
 
-@theme inline {
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+.font-pixel-block {
+  font-family: 'Press Start 2P', monospace;
+}
 
-  --color-background: var(--color-background);
-  --color-surface: var(--color-surface);
-  --color-surface-hover: var(--color-surface-hover);
-  --color-border: var(--color-border);
-  --color-border-hover: var(--color-border-hover);
-
-  --color-emerald-accent: var(--color-emerald-accent);
-  --color-blue-accent: var(--color-blue-accent);
+.font-pixel-clean {
+  font-family: 'Silkscreen', monospace;
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Eliminate ugly grey browser scrollbars & arrow buttons everywhere */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #492191 #120829;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+*::-webkit-scrollbar-track {
+  background: #120829;
+  border: 1px solid #231154;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #492191;
+  border-radius: 0px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #E63E9B;
+}
+
+/* Utility to completely hide scrollbars on horizontal chip rows */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 html {
-  background-color: #09090b;
-  color: #f4f4f5;
+  background-color: #14082E;
+  color: #FFFDF2;
   color-scheme: dark;
   scroll-behavior: smooth;
   overflow-x: clip;
 }
 
 body {
-  background-color: #09090b;
-  color: #f4f4f5;
+  background-color: #14082E;
+  color: #FFFDF2;
   font-family: var(--font-sans), sans-serif;
   overflow-x: clip;
   min-height: 100vh;
+}
+
+.nexus-page-bg {
+  background-color: #14082E;
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(230, 62, 155, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 85% 30%, rgba(107, 43, 181, 0.24) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(255, 102, 86, 0.10) 0%, transparent 50%),
+    linear-gradient(180deg, #160A36 0%, #1F0E4D 35%, #28115E 70%, #110626 100%);
+  background-attachment: fixed;
 }
 
 /* Subtle Architectural Grid Pattern (Linear/Vercel style) */
@@ -93,7 +141,7 @@ body {
 
 /* Accessibility Focus Ring */
 :focus-visible {
-  outline: 2px solid #10b981 !important;
+  outline: 2px solid #A5E8FF !important;
   outline-offset: 2px !important;
 }
 
@@ -103,6 +151,177 @@ body {
   animation-duration: 250ms;
 }
 
+/* ==========================================================================
+   8-BIT / 16-BIT HERO, SCROLL & HOVER ANIMATION SYSTEM
+   ========================================================================== */
+
+/* Logo drop-and-pop. NOTE: transform + brightness only — never opacity: 0 —
+   so the NEXUS wordmark (LCP element) is painted on the very first frame. */
+@keyframes heroLogoPop {
+  0% {
+    transform: translateY(-28px) scale(0.88);
+    filter: brightness(1.8);
+  }
+  60% {
+    transform: translateY(4px) scale(1.03);
+    filter: brightness(1.15);
+  }
+  80% {
+    transform: translateY(-2px) scale(0.99);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* Staggered hero rise for badge / countdown / dialog / CTAs (non-LCP elements) */
+@keyframes heroRiseIn {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pixelFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pixelPulseGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes scanlineSweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-hero-logo-pop {
+  animation: heroLogoPop 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--nf-d, 0ms);
+}
+
+.nf-hero-rise {
+  animation: heroRiseIn 0.56s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--nf-d, 0ms);
+}
+
+/* When the first-visit CRT shutter is playing, hold the hero choreography
+   until the shutter opens so the entrance is actually seen. */
+html[data-nf-intro="play"] .animate-hero-logo-pop,
+html[data-nf-intro="play"] .nf-hero-rise {
+  animation-delay: calc(var(--nf-d, 0ms) + 460ms);
+}
+
+/* Returning to "/" via client navigation: no replay, zero flash */
+.nf-hero-static .animate-hero-logo-pop,
+.nf-hero-static .nf-hero-rise {
+  animation: none;
+}
+
+.animate-pixel-float {
+  animation: pixelFloat 4s steps(6, end) infinite;
+}
+
+.animate-pixel-glint {
+  animation: pixelPulseGlow 2.2s steps(4, end) infinite;
+}
+
+/* Tactile 8-bit transitions. Lift + hard-shadow values are applied per element
+   with Tailwind hover: utilities (which win over this components layer). */
+@layer components {
+  .pixel-card-interactive {
+    transition-property: translate, transform, scale, border-color, box-shadow, background-color, color;
+    transition-duration: 180ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   First-visit CRT shutter intro — pure CSS timing (no JS dependency), so it
+   always clears in ~850ms even if hydration is slow.
+   -------------------------------------------------------------------------- */
+@keyframes nfIntroHide {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes nfShutterUp {
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes nfShutterDown {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes nfBootBoxOut {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes nfBlockOn {
+  to {
+    background-color: #E63E9B;
+  }
+}
+
+.nf-intro {
+  animation: nfIntroHide 0s linear 860ms forwards;
+}
+
+html[data-nf-intro="skip"] .nf-intro {
+  display: none;
+}
+
+.nf-intro-top {
+  animation: nfShutterUp 380ms cubic-bezier(0.7, 0, 0.3, 1) 440ms forwards;
+}
+
+.nf-intro-bottom {
+  animation: nfShutterDown 380ms cubic-bezier(0.7, 0, 0.3, 1) 440ms forwards;
+}
+
+.nf-intro-box {
+  animation: nfBootBoxOut 180ms ease-in 420ms forwards;
+}
+
+.nf-intro-block {
+  background-color: #1B0E40;
+  animation: nfBlockOn 1ms steps(1, end) forwards;
+  animation-delay: calc(var(--i, 0) * 36ms + 40ms);
+}
+
 /* Reduced Motion Fallbacks */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -110,5 +329,21 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Respect reduced motion for Lighthouse Accessibility 100 */
+  .nf-intro {
+    display: none !important;
+  }
+
+  .animate-hero-logo-pop,
+  .nf-hero-rise,
+  .animate-pixel-float,
+  .animate-pixel-glint {
+    animation: none !important;
+  }
+
+  .pixel-card-interactive {
+    transition: none !important;
   }
 }
