@@ -7,10 +7,8 @@ import {
   QrCode,
   Calendar,
   MapPin,
-  Users,
   Clock,
   Download,
-  Bookmark,
   ArrowRight,
   ShieldCheck,
   Trash2,
@@ -44,18 +42,17 @@ export default function DashboardPage() {
         localStorage.getItem("nexusfest_tickets") || "[]"
       );
       if (storedTickets.length === 0) {
-        // Seed an initial demo ticket so the dashboard is immediately impressive and usable
         const demoTicket: TicketData = {
-          ticketId: "NF26-ALPHA1",
+          ticketId: "NF26-VIP-491",
           eventId: "0fdc5427-4be3-59d8-9f17-1d7fc20d515a",
           eventName: "CodeCurrent: Monsoon Algorithm Round",
           category: "Coding",
-          date: "2026-09-26",
+          date: "2026-10-16",
           time: "10:00",
-          venue: "Virtual Arena 01",
+          venue: "Main Campus Arena",
           mode: "ONLINE",
-          attendeeName: "Cyber Delegate",
-          email: "delegate@nexusfest.ac.in",
+          attendeeName: "Rahul Sharma",
+          email: "rahul.sharma@college.edu",
           registeredAt: new Date().toISOString(),
         };
         setTickets([demoTicket]);
@@ -76,46 +73,46 @@ export default function DashboardPage() {
     try {
       localStorage.setItem("nexusfest_tickets", JSON.stringify(updated));
     } catch {}
-    toast.info("TICKET DEACTIVATED", {
-      description: `Ticket pass #${id} removed from your digital wallet.`,
+    toast.info("Pass Removed", {
+      description: `Ticket pass #${id} removed from your wallet.`,
     });
   };
 
   const handlePrint = (ticket: TicketData) => {
-    toast.success("PRINTING PASS", {
-      description: `Generating printable PDF voucher for ${ticket.eventName}...`,
+    toast.success("Printing Voucher", {
+      description: `Preparing printable pass for ${ticket.eventName}...`,
     });
   };
 
   return (
-    <div className="w-full min-h-screen py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
-      {/* Dashboard Terminal Header */}
-      <div className="border-b border-[#232635] pb-6">
-        <div className="flex items-center gap-2 text-xs font-mono text-[#00ff66] mb-2">
+    <div className="w-full min-h-screen py-12 px-6 max-w-7xl mx-auto space-y-10 bg-[#09090b]">
+      {/* Dashboard Header */}
+      <div className="border-b border-white/[0.08] pb-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-white/10 text-xs font-mono text-emerald-400 mb-3">
           <ShieldCheck className="w-3.5 h-3.5" />
-          <span>PORTAL // PARTICIPANT_TERMINAL // CREDENTIALS VERIFIED</span>
+          <span>Attendee Digital Wallet</span>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[#f4f5f8] tracking-tight">
-              DIGITAL HUB<span className="text-[#00ff66]">.</span>
+          <div className="space-y-2">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+              My Festival Passes
             </h1>
-            <p className="font-sans text-sm text-[#8b93a7] mt-2 max-w-2xl">
-              Access your festival credentials, virtual QR tickets, active team rosters, and offline schedule itinerary.
+            <p className="text-sm sm:text-base text-zinc-400 max-w-2xl leading-relaxed">
+              Access your verified entry passes, instant QR check-in codes, and schedule itinerary.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 font-mono text-xs">
-            <div className="p-3 bg-[#10121a] border border-[#232635]">
-              <span className="text-[#555c70] block text-[10px]">ACTIVE PASSES</span>
-              <span className="text-[#00ff66] font-bold text-base">
+          <div className="flex items-center gap-3 text-xs font-mono">
+            <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-white/10">
+              <span className="text-zinc-500 block text-[10px] uppercase">Active Passes</span>
+              <span className="text-white font-bold text-lg">
                 {mounted ? tickets.length : 0}
               </span>
             </div>
-            <div className="p-3 bg-[#10121a] border border-[#232635]">
-              <span className="text-[#555c70] block text-[10px]">SAVED EVENTS</span>
-              <span className="text-[#00f0ff] font-bold text-base">
+            <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-white/10">
+              <span className="text-zinc-500 block text-[10px] uppercase">Saved Events</span>
+              <span className="text-emerald-400 font-bold text-lg">
                 {mounted ? bookmarks.length : 0}
               </span>
             </div>
@@ -125,27 +122,27 @@ export default function DashboardPage() {
 
       {/* Virtual Passes Grid */}
       <section className="space-y-6">
-        <div className="flex items-center justify-between border-b border-[#232635] pb-2 font-mono text-xs">
-          <span className="text-[#00ff66] font-bold tracking-wider flex items-center gap-2">
-            <Ticket className="w-4 h-4" /> [ISSUED VIRTUAL TICKETS &amp; PASSES]
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 text-xs">
+          <span className="font-semibold text-white tracking-tight flex items-center gap-2">
+            <Ticket className="w-4 h-4 text-emerald-400" /> Issued Entry Passes
           </span>
-          <span className="text-[#8b93a7]">
-            PRESENT QR CODE AT ARENA GATES
+          <span className="text-zinc-500 font-mono">
+            Show QR code at venue registration desk
           </span>
         </div>
 
         {tickets.length === 0 ? (
-          <div className="p-10 bg-[#10121a] border border-[#232635] text-center space-y-3 font-mono text-xs">
-            <Ticket className="w-8 h-8 text-[#555c70] mx-auto" />
-            <div className="text-[#f4f5f8] font-bold">NO ACTIVE TICKETS ISSUED</div>
-            <p className="text-[#8b93a7]">
-              You have not enrolled in any events yet. Explore the catalog and book your entry pass.
+          <div className="p-16 rounded-2xl bg-zinc-900/30 border border-white/[0.08] text-center space-y-4">
+            <Ticket className="w-8 h-8 text-zinc-600 mx-auto" />
+            <div className="text-white font-semibold text-lg">No tickets in your wallet yet</div>
+            <p className="text-zinc-400 text-sm max-w-md mx-auto">
+              You haven&apos;t enrolled in any events yet. Explore the catalog and claim your entry pass.
             </p>
             <Link
               href="/events"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#00ff66] text-[#090a0f] font-bold"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-zinc-950 font-semibold text-xs hover:bg-zinc-200 transition-colors"
             >
-              BROWSE EVENTS CATALOG
+              Browse 30 Events
             </Link>
           </div>
         ) : (
@@ -153,74 +150,74 @@ export default function DashboardPage() {
             {tickets.map((t) => (
               <div
                 key={t.ticketId}
-                className="relative bg-[#10121a] border-2 border-[#00ff66] shadow-brutal-acid flex flex-col justify-between overflow-hidden"
+                className="relative rounded-2xl bg-gradient-to-b from-zinc-900/90 to-zinc-950 border border-white/15 p-6 flex flex-col justify-between shadow-2xl overflow-hidden"
               >
-                {/* Ticket Top Notch Header */}
-                <div className="p-4 bg-[#0a0b10] border-b border-[#232635] flex items-center justify-between font-mono text-xs">
+                {/* Ticket Header */}
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#00ff66]"></span>
-                    <span className="text-[#00ff66] font-bold tracking-wider">
-                      PASS #{t.ticketId}
+                    <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                    <span className="font-mono text-xs font-semibold text-white tracking-wider">
+                      Pass #{t.ticketId}
                     </span>
                   </div>
-                  <span className="text-[10px] text-[#00f0ff] border border-[#00f0ff]/30 px-1.5 py-0.5">
-                    {t.mode}
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono text-zinc-300 bg-white/5 border border-white/10">
+                    {t.mode === "ONLINE" ? "Online" : "Campus Arena"}
                   </span>
                 </div>
 
-                {/* Ticket Body */}
-                <div className="p-6 space-y-4">
+                {/* Ticket Details */}
+                <div className="py-5 space-y-4">
                   <div>
-                    <span className="text-[10px] font-mono text-[#8b93a7]">
-                      [{t.category.toUpperCase()}]
+                    <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider">
+                      {t.category}
                     </span>
-                    <h3 className="font-display font-bold text-xl text-[#f4f5f8] mt-0.5">
+                    <h3 className="text-xl font-bold text-white tracking-tight mt-0.5">
                       {t.eventName}
                     </h3>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 font-mono text-xs py-3 border-y border-[#232635]">
+                  <div className="grid grid-cols-2 gap-4 py-3 border-y border-white/[0.06] text-xs">
                     <div>
-                      <span className="text-[10px] text-[#555c70] block">ATTENDEE</span>
-                      <span className="text-[#f4f5f8] font-semibold">{t.attendeeName}</span>
+                      <span className="text-[10px] text-zinc-500 font-mono block">ATTENDEE</span>
+                      <span className="text-zinc-200 font-medium">{t.attendeeName}</span>
                       {t.teamName && (
-                        <span className="text-[10px] text-[#00f0ff] block mt-0.5">
-                          Squad: {t.teamName}
+                        <span className="text-[11px] text-zinc-400 block mt-0.5">
+                          Team: {t.teamName}
                         </span>
                       )}
                     </div>
                     <div>
-                      <span className="text-[10px] text-[#555c70] block">SCHEDULE &amp; VENUE</span>
-                      <span className="text-[#f4f5f8]">{t.date} • {t.time}</span>
-                      <span className="text-[10px] text-[#8b93a7] block">{t.venue}</span>
+                      <span className="text-[10px] text-zinc-500 font-mono block">SCHEDULE &amp; VENUE</span>
+                      <span className="text-zinc-200 font-mono">{t.date} • {t.time}</span>
+                      <span className="text-[11px] text-zinc-400 block">{t.venue}</span>
                     </div>
                   </div>
 
-                  {/* QR & Barcode Section */}
+                  {/* QR Code Section */}
                   <div className="flex items-center justify-between pt-2">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white text-black">
+                    <div className="flex items-center gap-4">
+                      <div className="p-2.5 rounded-xl bg-white text-zinc-950">
                         <QrCode className="w-12 h-12" />
                       </div>
-                      <div className="font-mono text-[10px] text-[#8b93a7] space-y-0.5">
-                        <div className="text-[#00ff66] font-bold">DIGITAL PASS VALID</div>
-                        <div>EMAIL: {t.email}</div>
-                        <div>AUTH: SECURE_HASH_OK</div>
+                      <div className="text-xs space-y-0.5 font-mono text-zinc-400">
+                        <div className="text-emerald-400 font-semibold">Verified Entry Pass</div>
+                        <div className="text-[11px] text-zinc-500">{t.email}</div>
+                        <div className="text-[10px] text-zinc-600">ID: {t.ticketId}</div>
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-2">
                       <button
                         onClick={() => handlePrint(t)}
-                        className="p-2 bg-[#171924] border border-[#232635] text-[#8b93a7] hover:text-[#00ff66] hover:border-[#00ff66] transition-colors"
-                        title="Download / Print voucher"
+                        className="p-2.5 rounded-lg bg-zinc-900 border border-white/10 text-zinc-400 hover:text-white hover:border-white/20 transition-colors"
+                        title="Print Voucher"
                       >
                         <Download className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleRemoveTicket(t.ticketId)}
-                        className="p-2 bg-[#171924] border border-[#232635] text-[#8b93a7] hover:text-[#ff3344] hover:border-[#ff3344] transition-colors"
-                        title="Delete pass"
+                        className="p-2.5 rounded-lg bg-zinc-900 border border-white/10 text-zinc-400 hover:text-rose-400 hover:border-rose-500/30 transition-colors"
+                        title="Remove Pass"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -228,10 +225,10 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Bottom Stub */}
-                <div className="px-4 py-2 bg-[#06070a] border-t border-[#232635] font-mono text-[10px] text-[#555c70] flex justify-between">
-                  <span>NEXUSFEST PROTOCOL TICKET VOUCHER</span>
-                  <span>KEEP ACTIVE OFFLINE</span>
+                {/* Bottom Bar */}
+                <div className="pt-3 border-t border-white/[0.06] text-[11px] text-zinc-500 flex justify-between font-mono">
+                  <span>NexusFest 2026 Official Entry Pass</span>
+                  <span className="text-emerald-400">Verified</span>
                 </div>
               </div>
             ))}
@@ -239,55 +236,55 @@ export default function DashboardPage() {
         )}
       </section>
 
-      {/* Itinerary & Quick Links */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-        <div className="md:col-span-2 bg-[#10121a] border border-[#232635] p-6 space-y-4 font-mono text-xs">
-          <div className="flex items-center gap-2 text-[#00ff66] font-bold border-b border-[#232635] pb-3">
-            <Clock className="w-4 h-4" />
-            <span>FESTIVAL DISPATCH // TIMELINE SYNC</span>
+      {/* Itinerary Schedule */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+        <div className="md:col-span-2 rounded-2xl bg-zinc-900/40 border border-white/[0.08] p-6 space-y-4">
+          <div className="flex items-center gap-2 text-white font-semibold text-base border-b border-white/[0.08] pb-3">
+            <Clock className="w-4 h-4 text-emerald-400" />
+            <span>Important Check-in Information</span>
           </div>
 
-          <p className="text-[#8b93a7] font-sans">
-            Festival checkpoints open at 09:00 IST on competition days. Make sure to download or screenshot your virtual QR passes in advance for zero-friction gate scanning.
+          <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
+            Campus registration gates open at 09:00 IST on festival days. Please download your virtual QR passes or keep this dashboard open on your device for rapid gate check-in.
           </p>
 
-          <div className="space-y-2 pt-2">
-            <div className="p-3 bg-[#090a0f] border border-[#232635] flex justify-between">
-              <span className="text-[#f4f5f8]">PHASE 1: HACKATHON PROTOCOL COMMENCEMENT</span>
-              <span className="text-[#00ff66]">10:00 IST</span>
+          <div className="space-y-2.5 pt-2 text-xs font-mono">
+            <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-white/[0.06] flex justify-between items-center">
+              <span className="text-zinc-200">Day 1: Algorithm Marathon &amp; Hackathon Check-in</span>
+              <span className="text-emerald-400 font-semibold">10:00 IST</span>
             </div>
-            <div className="p-3 bg-[#090a0f] border border-[#232635] flex justify-between">
-              <span className="text-[#f4f5f8]">PHASE 2: ROBOTICS COMBAT ARENA TRIALS</span>
-              <span className="text-[#00f0ff]">14:00 IST</span>
+            <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-white/[0.06] flex justify-between items-center">
+              <span className="text-zinc-200">Day 2: Robotics Combat &amp; Drone Heats</span>
+              <span className="text-blue-400 font-semibold">14:00 IST</span>
             </div>
-            <div className="p-3 bg-[#090a0f] border border-[#232635] flex justify-between">
-              <span className="text-[#f4f5f8]">PHASE 3: GRAND PRIZE CEREMONY</span>
-              <span className="text-[#ffb800]">18:30 IST</span>
+            <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-white/[0.06] flex justify-between items-center">
+              <span className="text-zinc-200">Day 3: Grand Demo Day &amp; Award Ceremony</span>
+              <span className="text-amber-400 font-semibold">18:30 IST</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#10121a] border border-[#232635] p-6 space-y-4 font-mono text-xs">
-          <div className="text-[#00f0ff] font-bold border-b border-[#232635] pb-3">
-            QUICK SECTORS
+        <div className="rounded-2xl bg-zinc-900/40 border border-white/[0.08] p-6 space-y-4">
+          <div className="text-white font-semibold text-base border-b border-white/[0.08] pb-3">
+            Quick Links
           </div>
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-xs">
             <li>
               <Link
                 href="/events"
-                className="flex items-center justify-between p-2.5 bg-[#090a0f] border border-[#232635] hover:border-[#00ff66] text-[#8b93a7] hover:text-[#f4f5f8]"
+                className="flex items-center justify-between p-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] hover:border-white/20 text-zinc-300 hover:text-white transition-colors"
               >
                 <span>Browse All 30 Events</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#00ff66]" />
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
               </Link>
             </li>
             <li>
               <Link
-                href="/events?free_only=true"
-                className="flex items-center justify-between p-2.5 bg-[#090a0f] border border-[#232635] hover:border-[#00ff66] text-[#8b93a7] hover:text-[#f4f5f8]"
+                href="/events?price=FREE"
+                className="flex items-center justify-between p-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] hover:border-white/20 text-zinc-300 hover:text-white transition-colors"
               >
                 <span>Free Entry Contests</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#00ff66]" />
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
               </Link>
             </li>
           </ul>

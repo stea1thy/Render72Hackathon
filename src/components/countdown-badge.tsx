@@ -47,23 +47,22 @@ export function CountdownBadge({ deadlineIso }: CountdownBadgeProps) {
   if (!deadlineIso) return null;
   if (!timeLeft) {
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[#8b93a7]">
-        <Clock className="w-3 h-3 text-[#555c70]" />
-        <span>CALCULATING...</span>
+      <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-zinc-500">
+        <Clock className="w-3 h-3 text-zinc-600" />
+        <span>Calculating deadline...</span>
       </span>
     );
   }
 
   if (timeLeft.isExpired) {
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[#ff3344] font-semibold">
-        <Clock className="w-3 h-3 text-[#ff3344]" />
-        <span>[DEADLINE PASSED]</span>
+      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-mono text-rose-400 bg-rose-500/10 border border-rose-500/20 font-medium">
+        <Clock className="w-3 h-3 text-rose-400" />
+        <span>Registration closed</span>
       </span>
     );
   }
 
-  // Fixed width monospace formatting prevents layout shift during ticking
   const formatted =
     timeLeft.days > 0
       ? `${timeLeft.days}d ${timeLeft.hours.toString().padStart(2, "0")}h`
@@ -73,11 +72,11 @@ export function CountdownBadge({ deadlineIso }: CountdownBadgeProps) {
 
   return (
     <span
-      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#ffb800] bg-[#1a1608] px-1.5 py-0.5 border border-[#ffb800]/40 tabular-nums select-none"
+      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/20 tabular-nums select-none"
       title={`Closes at ${deadlineIso}`}
     >
-      <Clock className="w-3 h-3 text-[#ffb800] shrink-0" />
-      <span className="tracking-tight">{formatted} LEFT</span>
+      <Clock className="w-3 h-3 text-amber-400 shrink-0" />
+      <span className="tracking-tight">{formatted} left to register</span>
     </span>
   );
 }

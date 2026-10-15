@@ -9,11 +9,7 @@ import {
   X,
   SlidersHorizontal,
   RotateCcw,
-  Sparkles,
   ChevronDown,
-  Info,
-  Clock,
-  Layers,
 } from "lucide-react";
 import { EventCard } from "./event-card";
 import type { EventSummary } from "@/lib/types";
@@ -28,7 +24,6 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  // Read initial states from URL query string
   const urlSearch = searchParams.get("q") || "";
   const urlCategory = searchParams.get("category") || "ALL";
   const urlType = searchParams.get("type") || "ALL";
@@ -38,15 +33,12 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
   const urlRegStatus = searchParams.get("reg") || "ALL";
   const urlSort = searchParams.get("sort") || "soonest";
 
-  // Local state for debounced search input
   const [searchInput, setSearchInput] = useState(urlSearch);
 
-  // Sync search input with URL if URL changes externally
   useEffect(() => {
     setSearchInput(urlSearch);
   }, [urlSearch]);
 
-  // Extract all unique categories from events
   const categories = useMemo(() => {
     const set = new Set<string>();
     initialEvents.forEach((e) => {
@@ -55,7 +47,6 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
     return ["ALL", ...Array.from(set).sort()];
   }, [initialEvents]);
 
-  // Update URL helper
   const updateQuery = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value === "ALL" || !value) {
@@ -68,7 +59,6 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
     });
   };
 
-  // Debounce search update to URL
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchInput !== urlSearch) {
@@ -85,11 +75,9 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
     });
   };
 
-  // Filtered and sorted events
   const filteredEvents = useMemo(() => {
     return initialEvents
       .filter((item) => {
-        // Query search
         if (searchInput.trim()) {
           const q = searchInput.toLowerCase();
           const matchName = item.name.toLowerCase().includes(q);
@@ -101,30 +89,24 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
           }
         }
 
-        // Category filter
         if (urlCategory !== "ALL" && item.category !== urlCategory) {
           return false;
         }
 
-        // Event Type filter
         if (urlType !== "ALL" && item.event_type !== urlType) {
           return false;
         }
 
-        // Event Mode filter
         if (urlMode !== "ALL" && item.event_mode !== urlMode) {
           return false;
         }
 
-        // Tech vs Cultural
         if (urlTech === "TECHNICAL" && !item.is_technical) return false;
         if (urlTech === "CULTURAL" && item.is_technical) return false;
 
-        // Price filter
         if (urlPrice === "FREE" && item.price !== 0) return false;
         if (urlPrice === "PAID" && item.price === 0) return false;
 
-        // Registration status
         if (urlRegStatus === "OPEN" && item.registration_status !== "OPEN") return false;
 
         return true;
@@ -139,7 +121,6 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
         }
         if (urlSort === "name") return a.name.localeCompare(b.name);
 
-        // default: soonest start date
         const dateA = a.schedule_summary?.start_date || "9999";
         const dateB = b.schedule_summary?.start_date || "9999";
         return dateA.localeCompare(dateB);
@@ -156,7 +137,6 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
     urlSort,
   ]);
 
-  // Active filter count
   const activeFilterCount = [
     urlCategory !== "ALL",
     urlType !== "ALL",
@@ -170,23 +150,23 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
   return (
     <section className="w-full space-y-6">
       {/* Control Deck: Search bar + Quick Filters */}
-      <div className="p-4 sm:p-6 bg-[#10121a] border border-[#232635] shadow-brutal-zinc space-y-5">
+      <div className="p-6 rounded-2xl bg-zinc-900/40 border border-white/[0.08] space-y-5">
         <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
           {/* Search Box */}
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#00ff66]" aria-hidden="true" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" aria-hidden="true" />
             <input
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="SEARCH PROTOCOLS BY TITLE, TAG, CATEGORY OR STACK..."
-              className="w-full pl-10 pr-10 py-3 bg-[#090a0f] border border-[#232635] focus:border-[#00ff66] text-xs sm:text-sm font-mono text-[#f4f5f8] placeholder:text-[#555c70] transition-colors"
+              placeholder="Search by event title, category, or tags..."
+              className="w-full pl-10 pr-10 py-3 rounded-xl bg-zinc-950/80 border border-white/10 focus:border-white/30 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors"
               aria-label="Search events"
             />
             {searchInput && (
               <button
                 onClick={() => setSearchInput("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8b93a7] hover:text-[#f4f5f8]"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
                 aria-label="Clear search query"
               >
                 <X className="w-4 h-4" />
@@ -195,120 +175,115 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
           </div>
 
           {/* Sort Selector */}
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="font-mono text-xs text-[#8b93a7] hidden sm:inline">SORT:</span>
+          <div className="flex items-center gap-2.5 shrink-0">
+            <span className="text-xs text-zinc-400 font-medium hidden sm:inline">Sort by:</span>
             <div className="relative">
               <select
                 value={urlSort}
                 onChange={(e) => updateQuery("sort", e.target.value)}
-                className="appearance-none px-4 py-3 pr-8 bg-[#090a0f] border border-[#232635] text-xs font-mono text-[#f4f5f8] hover:border-[#00ff66] focus:border-[#00ff66] cursor-pointer"
+                className="appearance-none px-4 py-3 pr-9 rounded-xl bg-zinc-950/80 border border-white/10 text-xs text-zinc-200 hover:border-white/20 focus:border-white/30 cursor-pointer font-medium"
                 aria-label="Sort events"
               >
-                <option value="soonest">DATE // SOONEST FIRST</option>
-                <option value="price_low">FEE // LOWEST TO HIGHEST</option>
-                <option value="price_high">FEE // HIGHEST TO LOWEST</option>
-                <option value="seats">SEATS // MOST AVAILABLE</option>
-                <option value="name">ALPHABETICAL // A-Z</option>
+                <option value="soonest">Date: Soonest First</option>
+                <option value="price_low">Price: Low to High</option>
+                <option value="price_high">Price: High to Low</option>
+                <option value="seats">Seats: Most Available</option>
+                <option value="name">Alphabetical (A–Z)</option>
               </select>
-              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#8b93a7] pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" />
             </div>
           </div>
         </div>
 
         {/* Filter Pills Row */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#232635] text-xs font-mono">
-          <span className="text-[#8b93a7] text-[11px] mr-1 flex items-center gap-1">
-            <Filter className="w-3.5 h-3.5 text-[#00ff66]" /> FILTERS:
+        <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-white/[0.06] text-xs">
+          <span className="text-zinc-400 text-xs mr-1 flex items-center gap-1 font-medium">
+            <Filter className="w-3.5 h-3.5 text-zinc-400" /> Filters:
           </span>
 
-          {/* Mode Pill */}
           <button
             onClick={() => updateQuery("mode", urlMode === "ONLINE" ? "ALL" : "ONLINE")}
-            className={`px-2.5 py-1 border transition-colors ${
+            className={`px-3 py-1.5 rounded-full border transition-colors ${
               urlMode === "ONLINE"
-                ? "bg-[#00f0ff] text-[#090a0f] border-[#00f0ff] font-bold"
-                : "bg-[#090a0f] text-[#8b93a7] border-[#232635] hover:border-[#00f0ff] hover:text-[#f4f5f8]"
+                ? "bg-blue-500/20 text-blue-300 border-blue-500/40 font-medium"
+                : "bg-zinc-950/60 text-zinc-400 border-white/10 hover:border-white/20 hover:text-white"
             }`}
           >
-            [ONLINE ONLY]
+            Online Only
           </button>
 
           <button
             onClick={() => updateQuery("mode", urlMode === "OFFLINE" ? "ALL" : "OFFLINE")}
-            className={`px-2.5 py-1 border transition-colors ${
+            className={`px-3 py-1.5 rounded-full border transition-colors ${
               urlMode === "OFFLINE"
-                ? "bg-[#f4f5f8] text-[#090a0f] border-[#f4f5f8] font-bold"
-                : "bg-[#090a0f] text-[#8b93a7] border-[#232635] hover:border-[#f4f5f8] hover:text-[#f4f5f8]"
+                ? "bg-white text-zinc-950 border-white font-medium"
+                : "bg-zinc-950/60 text-zinc-400 border-white/10 hover:border-white/20 hover:text-white"
             }`}
           >
-            [IN-PERSON CAMPUS]
+            In-Person Campus
           </button>
 
-          {/* Free vs Paid */}
           <button
             onClick={() => updateQuery("price", urlPrice === "FREE" ? "ALL" : "FREE")}
-            className={`px-2.5 py-1 border transition-colors ${
+            className={`px-3 py-1.5 rounded-full border transition-colors ${
               urlPrice === "FREE"
-                ? "bg-[#00ff66] text-[#090a0f] border-[#00ff66] font-bold"
-                : "bg-[#090a0f] text-[#8b93a7] border-[#232635] hover:border-[#00ff66] hover:text-[#f4f5f8]"
+                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-medium"
+                : "bg-zinc-950/60 text-zinc-400 border-white/10 hover:border-white/20 hover:text-white"
             }`}
           >
-            [FREE ENTRY: ₹0]
+            Free Entry
           </button>
 
-          {/* Event Type */}
           <button
             onClick={() => updateQuery("type", urlType === "WORKSHOP" ? "ALL" : "WORKSHOP")}
-            className={`px-2.5 py-1 border transition-colors ${
+            className={`px-3 py-1.5 rounded-full border transition-colors ${
               urlType === "WORKSHOP"
-                ? "bg-[#ffb800] text-[#090a0f] border-[#ffb800] font-bold"
-                : "bg-[#090a0f] text-[#8b93a7] border-[#232635] hover:border-[#ffb800] hover:text-[#f4f5f8]"
+                ? "bg-amber-500/20 text-amber-300 border-amber-500/40 font-medium"
+                : "bg-zinc-950/60 text-zinc-400 border-white/10 hover:border-white/20 hover:text-white"
             }`}
           >
-            [WORKSHOPS]
+            Workshops
           </button>
 
-          {/* Registration Open Only */}
           <button
             onClick={() => updateQuery("reg", urlRegStatus === "OPEN" ? "ALL" : "OPEN")}
-            className={`px-2.5 py-1 border transition-colors ${
+            className={`px-3 py-1.5 rounded-full border transition-colors ${
               urlRegStatus === "OPEN"
-                ? "bg-[#00ff66] text-[#090a0f] border-[#00ff66] font-bold"
-                : "bg-[#090a0f] text-[#8b93a7] border-[#232635] hover:border-[#00ff66] hover:text-[#f4f5f8]"
+                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-medium"
+                : "bg-zinc-950/60 text-zinc-400 border-white/10 hover:border-white/20 hover:text-white"
             }`}
           >
-            [REGISTRATION OPEN]
+            Open for Registration
           </button>
 
-          {/* Technical vs Cultural */}
           <button
             onClick={() => updateQuery("tech", urlTech === "TECHNICAL" ? "ALL" : "TECHNICAL")}
-            className={`px-2.5 py-1 border transition-colors ${
+            className={`px-3 py-1.5 rounded-full border transition-colors ${
               urlTech === "TECHNICAL"
-                ? "bg-[#00ff66] text-[#090a0f] border-[#00ff66] font-bold"
-                : "bg-[#090a0f] text-[#8b93a7] border-[#232635] hover:border-[#00ff66] hover:text-[#f4f5f8]"
+                ? "bg-zinc-800 text-white border-white/30 font-medium"
+                : "bg-zinc-950/60 text-zinc-400 border-white/10 hover:border-white/20 hover:text-white"
             }`}
           >
-            [TECH DEV ONLY]
+            Technical Track
           </button>
         </div>
 
         {/* Category Horizontal Scroll Strip */}
-        <div className="pt-2 border-t border-[#232635] flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none font-mono text-[11px]">
-          <span className="text-[#555c70] shrink-0 mr-1">CATEGORY:</span>
+        <div className="pt-3 border-t border-white/[0.06] flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
+          <span className="text-zinc-500 shrink-0 mr-1 text-[11px] font-medium">Category:</span>
           {categories.map((cat) => {
             const isSelected = urlCategory === cat;
             return (
               <button
                 key={cat}
                 onClick={() => updateQuery("category", cat)}
-                className={`px-2 py-1 shrink-0 whitespace-nowrap transition-colors border ${
+                className={`px-3 py-1 rounded-full shrink-0 whitespace-nowrap transition-colors border text-xs ${
                   isSelected
-                    ? "bg-[#171924] text-[#00ff66] border-[#00ff66] font-bold shadow-brutal-sm"
-                    : "bg-[#090a0f] text-[#8b93a7] border-[#232635] hover:text-[#f4f5f8] hover:border-[#555c70]"
+                    ? "bg-white text-zinc-950 border-white font-medium"
+                    : "bg-zinc-950/60 text-zinc-400 border-white/10 hover:text-white hover:border-white/20"
                 }`}
               >
-                {cat}
+                {cat === "ALL" ? "All Categories" : cat}
               </button>
             );
           })}
@@ -316,26 +291,26 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
       </div>
 
       {/* Results Header + Active Filter Chips */}
-      <div className="flex flex-wrap items-center justify-between gap-4 py-2 border-b border-[#232635] font-mono text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-4 py-2 border-b border-white/[0.08] text-xs">
         <div className="flex items-center gap-2">
-          <span className="text-[#00ff66] font-bold">
-            [{filteredEvents.length} OF {initialEvents.length} RECORDS MATCHED]
+          <span className="text-zinc-300 font-medium">
+            Showing {filteredEvents.length} of {initialEvents.length} events
           </span>
           {isPending && (
-            <span className="text-[#00f0ff] animate-pulse">// REFLOWING...</span>
+            <span className="text-emerald-400 animate-pulse text-[11px] font-mono">• Updating...</span>
           )}
         </div>
 
         {activeFilterCount > 0 && (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[#8b93a7] text-[11px]">ACTIVE CRITERIA:</span>
+            <span className="text-zinc-500 text-xs">Active filters:</span>
 
             {urlCategory !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#171924] border border-[#00ff66] text-[#00ff66] text-[10px]">
-                CAT: {urlCategory}
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-900 border border-white/15 text-zinc-200 text-xs">
+                {urlCategory}
                 <button
                   onClick={() => updateQuery("category", "ALL")}
-                  className="hover:text-white"
+                  className="hover:text-white ml-0.5"
                   aria-label="Remove category filter"
                 >
                   <X className="w-3 h-3" />
@@ -344,11 +319,11 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
             )}
 
             {urlMode !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#171924] border border-[#00f0ff] text-[#00f0ff] text-[10px]">
-                MODE: {urlMode}
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-900 border border-white/15 text-zinc-200 text-xs">
+                {urlMode === "ONLINE" ? "Online" : "In-Person"}
                 <button
                   onClick={() => updateQuery("mode", "ALL")}
-                  className="hover:text-white"
+                  className="hover:text-white ml-0.5"
                   aria-label="Remove mode filter"
                 >
                   <X className="w-3 h-3" />
@@ -357,11 +332,11 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
             )}
 
             {urlPrice !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#171924] border border-[#00ff66] text-[#00ff66] text-[10px]">
-                PRICE: {urlPrice}
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-900 border border-white/15 text-zinc-200 text-xs">
+                {urlPrice === "FREE" ? "Free Only" : "Paid Only"}
                 <button
                   onClick={() => updateQuery("price", "ALL")}
-                  className="hover:text-white"
+                  className="hover:text-white ml-0.5"
                   aria-label="Remove price filter"
                 >
                   <X className="w-3 h-3" />
@@ -370,11 +345,11 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
             )}
 
             {urlType !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#171924] border border-[#ffb800] text-[#ffb800] text-[10px]">
-                TYPE: {urlType}
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-900 border border-white/15 text-zinc-200 text-xs">
+                {urlType === "WORKSHOP" ? "Workshops" : "Competitions"}
                 <button
                   onClick={() => updateQuery("type", "ALL")}
-                  className="hover:text-white"
+                  className="hover:text-white ml-0.5"
                   aria-label="Remove type filter"
                 >
                   <X className="w-3 h-3" />
@@ -383,12 +358,12 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
             )}
 
             {urlRegStatus !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#171924] border border-[#00ff66] text-[#00ff66] text-[10px]">
-                REG: OPEN
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-900 border border-white/15 text-zinc-200 text-xs">
+                Open Registration
                 <button
                   onClick={() => updateQuery("reg", "ALL")}
-                  className="hover:text-white"
-                  aria-label="Remove registration status filter"
+                  className="hover:text-white ml-0.5"
+                  aria-label="Remove registration filter"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -396,12 +371,12 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
             )}
 
             {searchInput && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#171924] border border-[#f4f5f8] text-[#f4f5f8] text-[10px]">
-                QUERY: &quot;{searchInput}&quot;
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-900 border border-white/15 text-zinc-200 text-xs">
+                &ldquo;{searchInput}&rdquo;
                 <button
                   onClick={() => setSearchInput("")}
-                  className="hover:text-white"
-                  aria-label="Clear search filter"
+                  className="hover:text-white ml-0.5"
+                  aria-label="Clear search text"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -410,10 +385,10 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
 
             <button
               onClick={clearAllFilters}
-              className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#ff3344]/10 border border-[#ff3344] text-[#ff3344] text-[10px] hover:bg-[#ff3344] hover:text-[#090a0f] transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors"
             >
               <RotateCcw className="w-3 h-3" />
-              CLEAR ALL
+              Reset all
             </button>
           </div>
         )}
@@ -421,22 +396,22 @@ export function EventsCatalog({ initialEvents }: EventsCatalogProps) {
 
       {/* Main Grid View or Empty State */}
       {filteredEvents.length === 0 ? (
-        <div className="p-12 bg-[#10121a] border-2 border-dashed border-[#232635] text-center space-y-4">
-          <div className="w-12 h-12 mx-auto bg-[#171924] border border-[#232635] flex items-center justify-center text-[#ffb800]">
-            <SlidersHorizontal className="w-6 h-6" />
+        <div className="p-16 rounded-2xl bg-zinc-900/30 border border-white/[0.08] text-center space-y-4">
+          <div className="w-12 h-12 mx-auto rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-400">
+            <SlidersHorizontal className="w-5 h-5" />
           </div>
-          <h3 className="font-display font-bold text-xl text-[#f4f5f8]">
-            NO CORRESPONDING NODES FOUND
+          <h3 className="font-bold text-xl text-white">
+            No events match your criteria
           </h3>
-          <p className="font-sans text-xs text-[#8b93a7] max-w-md mx-auto">
-            Zero festival events matched your selected filter parameters or search term. Try resetting your filters to explore all 30 activities.
+          <p className="text-sm text-zinc-400 max-w-md mx-auto">
+            We couldn&apos;t find any events matching your current filters. Try broadening your search or clearing active filters.
           </p>
           <button
             onClick={clearAllFilters}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#00ff66] text-[#090a0f] font-mono font-bold text-xs shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-zinc-950 font-semibold text-xs hover:bg-zinc-200 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            RESET ALL FILTERS
+            Reset all filters
           </button>
         </div>
       ) : (

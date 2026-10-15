@@ -1,18 +1,14 @@
 "use client";
 
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
   Calendar,
   Users,
-  MapPin,
-  ArrowUpRight,
+  ArrowRight,
   Bookmark,
   Share2,
-  Check,
-  AlertCircle,
-  Clock,
   Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -25,26 +21,8 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, priority = false }: EventCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const [imageError, setImageError] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const rafId = useRef<number | null>(null);
-
-  // Spotlight hover via requestAnimationFrame
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    if (rafId.current) cancelAnimationFrame(rafId.current);
-    rafId.current = requestAnimationFrame(() => {
-      if (cardRef.current) {
-        cardRef.current.style.setProperty("--spotlight-x", `${x}px`);
-        cardRef.current.style.setProperty("--spotlight-y", `${y}px`);
-      }
-    });
-  }, []);
 
   const totalSeats = event.total_seats || 100;
   const seatsFilled = event.seats_filled || 0;
@@ -61,8 +39,8 @@ export function EventCard({ event, priority = false }: EventCardProps) {
     if (typeof window !== "undefined") {
       const url = `${window.location.origin}/events/${event.id}`;
       navigator.clipboard.writeText(url);
-      toast.success("COORDINATES COPIED", {
-        description: `Direct link to ${event.name} copied to clipboard.`,
+      toast.success("Link copied to clipboard", {
+        description: `Direct link to ${event.name} is ready to share.`,
       });
     }
   };
@@ -72,8 +50,8 @@ export function EventCard({ event, priority = false }: EventCardProps) {
     e.stopPropagation();
     setIsBookmarked(!isBookmarked);
     if (!isBookmarked) {
-      toast.success("EVENT SAVED TO HUB", {
-        description: `Added "${event.name}" to your offline itinerary.`,
+      toast.success("Saved to your pass wallet", {
+        description: `Added "${event.name}" to your saved schedule.`,
       });
       try {
         const stored = JSON.parse(localStorage.getItem("nexusfest_bookmarks") || "[]");
@@ -82,7 +60,7 @@ export function EventCard({ event, priority = false }: EventCardProps) {
         }
       } catch {}
     } else {
-      toast.info("EVENT REMOVED FROM HUB");
+      toast.info("Removed from saved passes");
       try {
         const stored = JSON.parse(localStorage.getItem("nexusfest_bookmarks") || "[]");
         localStorage.setItem(
@@ -95,45 +73,45 @@ export function EventCard({ event, priority = false }: EventCardProps) {
 
   return (
     <article
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      className={`group relative flex flex-col bg-[#10121a] border border-[#232635] hover:border-[#00ff66] transition-colors spotlight-card shadow-brutal-zinc hover:shadow-brutal-acid ${
-        isCompleted ? "opacity-75 grayscale-[20%]" : ""
+      className={`group relative flex flex-col rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 border border-white/[0.08] hover:border-white/20 transition-all duration-300 overflow-hidden shadow-xl ${
+        isCompleted ? "opacity-75" : ""
       }`}
     >
-      {/* Top Banner Tag Line */}
-      <div className="flex items-center justify-between px-3.5 py-2 border-b border-[#232635] bg-[#0c0d13] text-[10px] font-mono">
+      {/* Top Banner Category & Action Bar */}
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06] bg-zinc-950/40 text-xs">
         <div className="flex items-center gap-2 truncate">
-          <span className="text-[#00ff66] font-bold">[{event.category.toUpperCase()}]</span>
-          <span className="text-[#555c70]">|</span>
-          <span className="text-[#8b93a7]">
-            {event.is_technical ? "TECHNICAL" : "CULTURAL"}
+          <span className="font-mono text-[11px] text-emerald-400 font-medium">
+            {event.category}
+          </span>
+          <span className="text-zinc-600">•</span>
+          <span className="text-[11px] text-zinc-400 font-mono">
+            {event.is_technical ? "Technical" : "Cultural"}
           </span>
           {event.is_featured && (
-            <span className="px-1 py-0.2 bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 font-bold flex items-center gap-1">
-              <Sparkles className="w-2.5 h-2.5" /> FEATURED
+            <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 text-[10px] font-medium flex items-center gap-1">
+              <Sparkles className="w-2.5 h-2.5" /> Featured
             </span>
           )}
         </div>
 
         {/* Action icons */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={handleBookmark}
             type="button"
-            className="p-1 text-[#8b93a7] hover:text-[#00ff66] transition-colors"
+            className="p-1 rounded text-zinc-400 hover:text-white transition-colors"
             aria-label={isBookmarked ? "Remove bookmark" : "Bookmark event"}
           >
             <Bookmark
               className={`w-3.5 h-3.5 ${
-                isBookmarked ? "fill-[#00ff66] text-[#00ff66]" : ""
+                isBookmarked ? "fill-emerald-400 text-emerald-400" : ""
               }`}
             />
           </button>
           <button
             onClick={handleShare}
             type="button"
-            className="p-1 text-[#8b93a7] hover:text-[#00f0ff] transition-colors"
+            className="p-1 rounded text-zinc-400 hover:text-white transition-colors"
             aria-label="Share event link"
           >
             <Share2 className="w-3.5 h-3.5" />
@@ -144,7 +122,7 @@ export function EventCard({ event, priority = false }: EventCardProps) {
       {/* Cover Image Container */}
       <Link
         href={`/events/${event.id}`}
-        className="relative aspect-video w-full overflow-hidden bg-[#06070a] block focus-visible:outline-none"
+        className="relative aspect-video w-full overflow-hidden bg-zinc-950 block focus-visible:outline-none"
         tabIndex={-1}
         aria-hidden="true"
       >
@@ -155,64 +133,64 @@ export function EventCard({ event, priority = false }: EventCardProps) {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             priority={priority}
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
             onError={() => setImageError(true)}
             style={{ viewTransitionName: `event-cover-${event.id}` }}
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-cyber-grid text-[#8b93a7] font-mono text-xs">
-            <span className="text-[#00ff66] font-bold text-lg mb-1">[NF_IMAGE]</span>
-            <span>{event.name}</span>
+          <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-zinc-950 text-zinc-500 text-xs">
+            <span className="font-semibold text-zinc-400 text-sm mb-1">{event.name}</span>
+            <span>NexusFest 2026</span>
           </div>
         )}
 
-        {/* Floating Mode & Status Badges */}
-        <div className="absolute top-2 left-2 flex flex-wrap gap-1.5 z-10 pointer-events-none">
+        {/* Floating Badges */}
+        <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 z-10 pointer-events-none">
           <span
-            className={`px-2 py-0.5 text-[10px] font-mono font-bold tracking-wider border ${
+            className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium backdrop-blur-md border ${
               event.event_mode === "ONLINE"
-                ? "bg-[#090a0f]/90 text-[#00f0ff] border-[#00f0ff]"
-                : "bg-[#090a0f]/90 text-[#f4f5f8] border-[#8b93a7]"
+                ? "bg-zinc-950/80 text-blue-400 border-blue-500/30"
+                : "bg-zinc-950/80 text-zinc-200 border-white/15"
             }`}
           >
-            {event.event_mode}
+            {event.event_mode === "ONLINE" ? "Online" : "Campus Arena"}
           </span>
-          <span className="px-2 py-0.5 text-[10px] font-mono font-bold tracking-wider bg-[#090a0f]/90 text-[#8b93a7] border border-[#232635]">
-            {event.event_type}
+          <span className="px-2 py-0.5 rounded-full text-[11px] font-mono text-zinc-300 bg-zinc-950/80 border border-white/10 backdrop-blur-md">
+            {event.event_type === "WORKSHOP" ? "Workshop" : "Competition"}
           </span>
         </div>
 
-        {/* Registration status banner on image */}
-        <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
+        {/* Status Pill on Image */}
+        <div className="absolute bottom-2.5 right-2.5 z-10 pointer-events-none">
           {isCompleted ? (
-            <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-[#171924]/90 text-[#8b93a7] border border-[#232635]">
-              COMPLETED
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-zinc-900/90 text-zinc-400 border border-white/10 backdrop-blur-md">
+              Completed
             </span>
           ) : isSoldOut ? (
-            <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-[#ff3344] text-[#090a0f]">
-              SOLD OUT
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-rose-500/20 text-rose-300 border border-rose-500/30 backdrop-blur-md">
+              Sold Out
             </span>
           ) : isRegOpen ? (
-            <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-[#00ff66] text-[#090a0f]">
-              REG OPEN
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 backdrop-blur-md">
+              Open Now
             </span>
           ) : (
-            <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-[#ffb800] text-[#090a0f]">
-              CLOSED
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 backdrop-blur-md">
+              Closed
             </span>
           )}
         </div>
       </Link>
 
       {/* Card Body */}
-      <div className="flex flex-col flex-1 p-4 space-y-3">
+      <div className="flex flex-col flex-1 p-5 space-y-3.5">
         {/* Title */}
         <Link
           href={`/events/${event.id}`}
           className="focus-visible:outline-none"
         >
           <h2
-            className="font-display font-bold text-lg text-[#f4f5f8] group-hover:text-[#00ff66] transition-colors line-clamp-1"
+            className="font-bold text-lg text-white group-hover:text-zinc-200 transition-colors line-clamp-1 tracking-tight"
             style={{ viewTransitionName: `event-title-${event.id}` }}
           >
             {event.name}
@@ -220,49 +198,49 @@ export function EventCard({ event, priority = false }: EventCardProps) {
         </Link>
 
         {/* Blurb */}
-        <p className="font-sans text-xs text-[#8b93a7] line-clamp-2 leading-relaxed flex-1">
-          {event.blurb || "No detailed blurb provided for this module."}
+        <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed flex-1">
+          {event.blurb || "Join this event at NexusFest 2026. Explore schedule, rules, and entry passes."}
         </p>
 
         {/* Event Schedule Info */}
-        <div className="pt-2 border-t border-[#232635] flex items-center justify-between text-xs font-mono text-[#8b93a7]">
+        <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
           <div className="flex items-center gap-1.5">
-            <Calendar className="w-3.5 h-3.5 text-[#00ff66]" aria-hidden="true" />
+            <Calendar className="w-3.5 h-3.5 text-zinc-500" aria-hidden="true" />
             <span>
-              {event.schedule_summary?.start_date || "TBA"} • {event.schedule_summary?.start_time || ""}
+              {event.schedule_summary?.start_date || "Oct 2026"} • {event.schedule_summary?.start_time || "10:00"}
             </span>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5 text-[#00f0ff]" aria-hidden="true" />
+            <Users className="w-3.5 h-3.5 text-zinc-500" aria-hidden="true" />
             <span>
               {event.min_teamsize === 1 && event.max_teamsize === 1
-                ? "SOLO"
-                : `SQUAD (${event.min_teamsize}-${event.max_teamsize})`}
+                ? "Solo"
+                : `Team (${event.min_teamsize}–${event.max_teamsize})`}
             </span>
           </div>
         </div>
 
         {/* Capacity / Seats Left Gauge */}
-        <div className="space-y-1">
-          <div className="flex justify-between text-[10px] font-mono">
-            <span className="text-[#8b93a7]">
-              SEATS: {seatsFilled}/{totalSeats}
+        <div className="space-y-1.5">
+          <div className="flex justify-between text-[11px] font-mono">
+            <span className="text-zinc-400">
+              Capacity: {seatsFilled} / {totalSeats}
             </span>
             <span
               className={
                 percentFilled >= 90
-                  ? "text-[#ff3344] font-bold"
+                  ? "text-rose-400 font-medium"
                   : percentFilled >= 70
-                  ? "text-[#ffb800]"
-                  : "text-[#00ff66]"
+                  ? "text-amber-400"
+                  : "text-emerald-400"
               }
             >
-              {isSoldOut ? "CAPACITY FULL" : `${seatsLeft} REMAINING`}
+              {isSoldOut ? "Full" : `${seatsLeft} seats left`}
             </span>
           </div>
           <div
-            className="w-full h-1.5 bg-[#171924] overflow-hidden"
+            className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden"
             role="progressbar"
             aria-valuenow={percentFilled}
             aria-valuemin={0}
@@ -270,12 +248,12 @@ export function EventCard({ event, priority = false }: EventCardProps) {
             aria-label={`${seatsFilled} of ${totalSeats} seats filled`}
           >
             <div
-              className={`h-full transition-all duration-500 ${
+              className={`h-full rounded-full transition-all duration-500 ${
                 percentFilled >= 90
-                  ? "bg-[#ff3344]"
+                  ? "bg-rose-500"
                   : percentFilled >= 70
-                  ? "bg-[#ffb800]"
-                  : "bg-[#00ff66]"
+                  ? "bg-amber-500"
+                  : "bg-emerald-400"
               }`}
               style={{ width: `${percentFilled}%` }}
             />
@@ -290,24 +268,24 @@ export function EventCard({ event, priority = false }: EventCardProps) {
         )}
 
         {/* Price & Primary CTA */}
-        <div className="pt-3 border-t border-[#232635] flex items-center justify-between">
+        <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
           <div className="font-mono">
-            <span className="text-base font-extrabold text-[#f4f5f8]">
-              {event.price === 0 ? "FREE" : `₹${event.price}`}
+            <span className="text-base font-bold text-white">
+              {event.price === 0 ? "Free" : `₹${event.price}`}
             </span>
             {event.price > 0 && (
-              <span className="text-[10px] text-[#8b93a7] ml-1">
-                /{event.is_per_head ? "HEAD" : "TEAM"}
+              <span className="text-[11px] text-zinc-500 ml-1">
+                /{event.is_per_head ? "person" : "team"}
               </span>
             )}
           </div>
 
           <Link
             href={`/events/${event.id}`}
-            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-mono font-bold bg-[#171924] text-[#00ff66] border border-[#232635] hover:border-[#00ff66] hover:bg-[#00ff66] hover:text-[#090a0f] transition-all shadow-brutal-sm"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-zinc-800 hover:bg-white text-zinc-200 hover:text-zinc-950 transition-colors"
           >
-            <span>DETAILS</span>
-            <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>View Details</span>
+            <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
           </Link>
         </div>
       </div>

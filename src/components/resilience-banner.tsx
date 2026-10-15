@@ -60,26 +60,26 @@ export function ResilienceBanner({ onRetry, isFetching = false }: ResilienceBann
     : "";
 
   return (
-    <div className="w-full space-y-2 font-mono text-xs mb-4">
+    <div className="w-full space-y-2 text-xs mb-4">
       {/* Offline Alert Banner */}
       {isOffline && (
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-between p-3 bg-[#171012] border-2 border-[#ff3344] text-[#ff3344] shadow-brutal-crimson"
+          className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/90 border border-rose-500/20 text-rose-300 backdrop-blur-md"
         >
-          <div className="flex items-center gap-2">
-            <WifiOff className="w-4 h-4 animate-bounce" />
-            <span className="font-bold">
-              [SYSTEM OFFLINE] Network transceiver disconnected. Operating on local cache.
+          <div className="flex items-center gap-2.5">
+            <WifiOff className="w-4 h-4 text-rose-400 shrink-0" />
+            <span className="font-medium">
+              Offline Mode — You&apos;re browsing cached event data. Reconnecting when internet is restored.
             </span>
           </div>
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-3 py-1 bg-[#ff3344] text-[#090a0f] font-bold text-[10px] hover:bg-white transition-colors"
+              className="px-3 py-1.5 bg-white text-zinc-950 font-semibold text-xs rounded-lg hover:bg-zinc-200 transition-colors shrink-0"
             >
-              RECONNECT
+              Reconnect
             </button>
           )}
         </div>
@@ -90,11 +90,11 @@ export function ResilienceBanner({ onRetry, isFetching = false }: ResilienceBann
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center gap-2 p-3 bg-[#1a1608] border border-[#ffb800] text-[#ffb800]"
+          className="flex items-center gap-2.5 p-3.5 rounded-xl bg-zinc-900/90 border border-amber-500/20 text-amber-300 backdrop-blur-md"
         >
-          <Clock className="w-4 h-4 animate-spin" />
+          <Clock className="w-4 h-4 text-amber-400 animate-spin shrink-0" />
           <span>
-            [CLUSTER LATENCY HIGH] Upstream server response is taking &gt;3000ms. Still attempting handshake...
+            Connecting to server — live updates are taking longer than usual. Still attempting to sync...
           </span>
         </div>
       )}

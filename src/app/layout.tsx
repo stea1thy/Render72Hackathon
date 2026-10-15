@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, JetBrains_Mono, Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navbar } from "@/components/navbar";
@@ -7,52 +7,35 @@ import { Footer } from "@/components/footer";
 import { getEvents } from "@/lib/api";
 import type { EventSummary } from "@/lib/types";
 
-const fontDisplay = Syne({
-  variable: "--font-display",
+const fontSans = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 const fontMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  display: "swap",
-});
-
-const fontSans = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
   weight: ["400", "500", "600"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "NexusFest 2026 // College Techfest Protocol",
+  title: "NexusFest 2026 — Where Builders Compete",
   description:
-    "NexusFest 2026: High-energy cyber-brutalist college tech fest featuring hackathons, robotics, competitive programming, and creative tech symposiums.",
-  keywords: [
-    "NexusFest",
-    "Techfest",
-    "Hackathon",
-    "Robotics",
-    "Coding",
-    "Workshops",
-    "College Fest",
-  ],
-  authors: [{ name: "NexusFest Organizing Committee" }],
+    "National annual college technology and cultural festival. 30 flagship hackathons, autonomous robotics competitions, and deep-dive engineering workshops with ₹1,50,000+ in prizes.",
   openGraph: {
-    title: "NexusFest 2026 // College Techfest Protocol",
+    title: "NexusFest 2026 — Where Builders Compete",
     description:
-      "Explore 30+ cutting-edge events, hackathons, and workshops at NexusFest 2026. Register solo or assemble your squad.",
+      "Join 5,000+ developers, designers, and roboticists across 30 events in Coimbatore and online.",
     type: "website",
     locale: "en_IN",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#090a0f",
+  themeColor: "#09090b",
   width: "device-width",
   initialScale: 1,
 };
@@ -66,27 +49,25 @@ export default async function RootLayout({
   try {
     initialEvents = await getEvents();
   } catch {
-    // Graceful fallback for initial layout render
     initialEvents = [];
   }
 
   return (
     <html
       lang="en"
-      className={`${fontDisplay.variable} ${fontMono.variable} ${fontSans.variable} dark`}
+      className={`${fontSans.variable} ${fontMono.variable} dark`}
     >
-      <body className="min-h-screen flex flex-col bg-[#090a0f] text-[#f4f5f8] antialiased selection:bg-[#00ff66] selection:text-[#090a0f]">
-        {/* Accessible skip to main content link */}
+      <body className="min-h-screen flex flex-col bg-[#09090b] text-zinc-100 antialiased selection:bg-emerald-500 selection:text-zinc-950 font-sans">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#00ff66] focus:text-[#090a0f] focus:font-mono focus:font-bold focus:shadow-brutal-zinc"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-zinc-950 focus:font-medium focus:rounded-md shadow-lg"
         >
-          [SKIP TO CONTENT]
+          Skip to content
         </a>
 
         <Providers>
           <Navbar events={initialEvents} />
-          <main id="main-content" className="flex-1 w-full min-h-screen flex flex-col">
+          <main id="main-content" className="flex-1 w-full flex flex-col min-h-screen">
             {children}
           </main>
           <Footer />

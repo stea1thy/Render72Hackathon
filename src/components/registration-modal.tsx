@@ -11,7 +11,6 @@ import {
   Mail,
   Users,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { EventDetail } from "@/lib/types";
@@ -35,7 +34,7 @@ export function RegistrationModal({ event }: RegistrationModalProps) {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName.trim() || !email.trim()) {
-      toast.error("MISSING REQUIRED FIELDS", {
+      toast.error("Missing information", {
         description: "Please provide both Full Name and valid College Email.",
       });
       return;
@@ -65,7 +64,7 @@ export function RegistrationModal({ event }: RegistrationModalProps) {
     } catch {}
 
     setStep("confirmed");
-    toast.success("REGISTRATION CONFIRMED", {
+    toast.success("Registration Confirmed", {
       description: `Access pass issued with Ticket ID #${generatedId}.`,
     });
   };
@@ -84,9 +83,9 @@ export function RegistrationModal({ event }: RegistrationModalProps) {
     return (
       <button
         disabled
-        className="w-full py-4 bg-[#171924] border border-[#232635] text-[#555c70] font-mono font-bold text-sm cursor-not-allowed select-none"
+        className="w-full py-3.5 rounded-xl bg-zinc-900 border border-white/10 text-zinc-500 font-medium text-sm cursor-not-allowed select-none"
       >
-        {isSoldOut ? "[REGISTRATION SOLD OUT]" : "[REGISTRATION CLOSED]"}
+        {isSoldOut ? "Registration Sold Out" : "Registration Closed"}
       </button>
     );
   }
@@ -96,25 +95,25 @@ export function RegistrationModal({ event }: RegistrationModalProps) {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="w-full py-4 bg-[#00ff66] text-[#090a0f] font-mono font-extrabold text-sm shadow-brutal-zinc hover:shadow-brutal-acid hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-3.5 rounded-xl bg-white text-zinc-950 font-semibold text-sm hover:bg-zinc-200 transition-colors shadow-lg flex items-center justify-center gap-2 cursor-pointer"
         >
           <Ticket className="w-4 h-4" />
-          <span>REGISTER ENTRY NOW // {event.price === 0 ? "FREE" : `₹${event.price}`}</span>
+          <span>Register for Event • {event.price === 0 ? "Free Entry" : `₹${event.price}`}</span>
         </button>
       </Dialog.Trigger>
 
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 data-[state=open]:animate-fadeIn" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-[#090a0f] border-2 border-[#00ff66] shadow-brutal-acid z-50 p-6 max-h-[90vh] overflow-y-auto">
-          <div className="flex items-center justify-between border-b border-[#232635] pb-4 mb-6">
-            <div className="flex items-center gap-2 font-mono text-xs text-[#00ff66] font-bold">
+        <Dialog.Overlay className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 data-[state=open]:animate-fadeIn" />
+        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-zinc-950 border border-white/10 rounded-2xl shadow-2xl z-50 p-6 max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+            <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-medium">
               <ShieldCheck className="w-4 h-4" />
-              <span>NEXUSFEST ENROLLMENT PROTOCOL</span>
+              <span>Event Registration</span>
             </div>
             <Dialog.Close asChild>
               <button
                 onClick={handleResetModal}
-                className="text-[#8b93a7] hover:text-[#f4f5f8] p-1"
+                className="text-zinc-400 hover:text-white p-1"
                 aria-label="Close dialog"
               >
                 <X className="w-5 h-5" />
@@ -125,143 +124,143 @@ export function RegistrationModal({ event }: RegistrationModalProps) {
           {step === "form" ? (
             <form onSubmit={handleRegister} className="space-y-4">
               <div>
-                <span className="text-[10px] font-mono text-[#00f0ff] uppercase tracking-wider">
-                  TARGET EVENT
+                <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+                  Event Details
                 </span>
-                <h3 className="font-display font-bold text-lg text-[#f4f5f8]">
+                <h3 className="font-bold text-lg text-white mt-0.5">
                   {event.name}
                 </h3>
-                <p className="font-mono text-xs text-[#8b93a7] mt-0.5">
-                  FEE: {event.price === 0 ? "FREE ENTRY (₹0)" : `₹${event.price} ${event.is_per_head ? "PER HEAD" : "PER TEAM"}`} • {event.event_mode}
+                <p className="text-xs text-zinc-400 mt-1">
+                  Fee: {event.price === 0 ? "Free Entry (₹0)" : `₹${event.price} ${event.is_per_head ? "per person" : "per team"}`} • {event.event_mode === "ONLINE" ? "Online" : "On-Campus Arena"}
                 </p>
               </div>
 
-              <div className="space-y-3 pt-2">
+              <div className="space-y-3.5 pt-2">
                 <div>
-                  <label className="block text-xs font-mono text-[#f4f5f8] mb-1">
-                    ATTENDEE FULL NAME *
+                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                    Full Name *
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#555c70]" />
+                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                     <input
                       type="text"
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="e.g. Alex Vance"
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#10121a] border border-[#232635] focus:border-[#00ff66] text-xs font-mono text-[#f4f5f8] placeholder:text-[#555c70] outline-none"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-zinc-900 border border-white/10 focus:border-white/30 text-sm text-white placeholder:text-zinc-500 outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-[#f4f5f8] mb-1">
-                    STUDENT / CORPORATE EMAIL *
+                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                    College or Student Email *
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#555c70]" />
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="alex.vance@university.edu"
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#10121a] border border-[#232635] focus:border-[#00ff66] text-xs font-mono text-[#f4f5f8] placeholder:text-[#555c70] outline-none"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-zinc-900 border border-white/10 focus:border-white/30 text-sm text-white placeholder:text-zinc-500 outline-none"
                     />
                   </div>
                 </div>
 
                 {!isSolo && (
                   <div>
-                    <label className="block text-xs font-mono text-[#f4f5f8] mb-1">
-                      TEAM / SQUAD NAME ({event.min_teamsize} - {event.max_teamsize} MEMBERS)
+                    <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                      Team Name ({event.min_teamsize}–{event.max_teamsize} Members)
                     </label>
                     <div className="relative">
-                      <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#555c70]" />
+                      <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                       <input
                         type="text"
                         value={teamName}
                         onChange={(e) => setTeamName(e.target.value)}
-                        placeholder="e.g. CyberVanguard"
-                        className="w-full pl-9 pr-3 py-2.5 bg-[#10121a] border border-[#232635] focus:border-[#00ff66] text-xs font-mono text-[#f4f5f8] placeholder:text-[#555c70] outline-none"
+                        placeholder="e.g. Neural Vanguard"
+                        className="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-zinc-900 border border-white/10 focus:border-white/30 text-sm text-white placeholder:text-zinc-500 outline-none"
                       />
                     </div>
                   </div>
                 )}
               </div>
 
-              <div className="p-3 bg-[#10121a] border border-[#232635] text-[11px] font-mono text-[#8b93a7]">
-                Notice: Instant pass issuance is enabled for this frontend prototype. Data persists to your browser digital hub.
+              <div className="p-3 rounded-lg bg-zinc-900/60 border border-white/[0.06] text-xs text-zinc-400">
+                Your entry pass will be generated instantly and added to your personal festival hub with an offline QR code.
               </div>
 
               <div className="pt-2 flex gap-3">
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-[#00ff66] text-[#090a0f] font-mono font-bold text-xs shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
+                  className="flex-1 py-3 rounded-lg bg-white text-zinc-950 font-semibold text-xs hover:bg-zinc-200 transition-colors cursor-pointer"
                 >
-                  CONFIRM &amp; MINT DIGITAL TICKET
+                  Confirm &amp; Issue Pass
                 </button>
                 <Dialog.Close asChild>
                   <button
                     type="button"
                     onClick={handleResetModal}
-                    className="px-4 py-3 bg-[#171924] border border-[#232635] text-[#8b93a7] font-mono text-xs hover:text-[#f4f5f8]"
+                    className="px-4 py-3 rounded-lg bg-zinc-900 border border-white/10 text-zinc-400 text-xs hover:text-white"
                   >
-                    CANCEL
+                    Cancel
                   </button>
                 </Dialog.Close>
               </div>
             </form>
           ) : (
-            /* Confirmation View: Stylized Cyber Ticket */
             <div className="space-y-6 text-center">
-              <div className="w-12 h-12 mx-auto bg-[#00ff66]/10 border border-[#00ff66] text-[#00ff66] flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 animate-pulse" />
+              <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
+                <CheckCircle className="w-6 h-6" />
               </div>
 
               <div>
-                <span className="text-[10px] font-mono text-[#00ff66] font-bold tracking-widest">
-                  // ENTRY PASS GRANTED
+                <span className="text-xs font-mono text-emerald-400 font-semibold uppercase tracking-wider">
+                  Registration Successful
                 </span>
-                <h3 className="font-display font-bold text-2xl text-[#f4f5f8] mt-1">
-                  YOU ARE ENROLLED
+                <h3 className="font-bold text-2xl text-white mt-1">
+                  You are registered!
                 </h3>
               </div>
 
-              {/* Digital Pass Mock Ticket */}
-              <div className="p-4 bg-[#10121a] border border-[#00ff66] text-left font-mono text-xs space-y-3 relative overflow-hidden">
-                <div className="flex justify-between items-start border-b border-[#232635] pb-2">
+              {/* Digital Pass Card */}
+              <div className="p-5 rounded-2xl bg-zinc-900 border border-white/10 text-left text-xs space-y-3 relative overflow-hidden shadow-xl">
+                <div className="flex justify-between items-start border-b border-white/[0.08] pb-2.5">
                   <div>
-                    <span className="text-[9px] text-[#8b93a7]">TICKET ID</span>
-                    <div className="text-[#00ff66] font-bold text-sm">{ticketId}</div>
+                    <span className="text-[10px] text-zinc-400 font-mono">PASS ID</span>
+                    <div className="text-white font-mono font-bold text-sm">{ticketId}</div>
                   </div>
                   <div className="text-right">
-                    <span className="text-[9px] text-[#8b93a7]">STATUS</span>
-                    <div className="text-[#00f0ff] font-bold">VERIFIED</div>
+                    <span className="text-[10px] text-zinc-400 font-mono">STATUS</span>
+                    <div className="text-emerald-400 font-mono font-semibold">Verified</div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-[11px]">
+                <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-[#555c70] block">ATTENDEE</span>
-                    <span className="text-[#f4f5f8] font-medium">{fullName}</span>
+                    <span className="text-zinc-500 text-[10px] font-mono block">ATTENDEE</span>
+                    <span className="text-zinc-200 font-medium">{fullName}</span>
                   </div>
                   <div>
-                    <span className="text-[#555c70] block">VENUE</span>
-                    <span className="text-[#f4f5f8]">{event.schedules?.[0]?.venue || "Main Arena"}</span>
+                    <span className="text-zinc-500 text-[10px] font-mono block">VENUE</span>
+                    <span className="text-zinc-200">{event.schedules?.[0]?.venue || "Main Campus Arena"}</span>
                   </div>
                 </div>
 
-                {/* Stylized QR Code Pattern */}
-                <div className="pt-2 border-t border-[#232635] flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <QrCode className="w-8 h-8 text-[#00ff66]" />
-                    <span className="text-[9px] text-[#8b93a7]">
-                      SCAN AT ENTRY DESK
+                <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-white text-zinc-950">
+                      <QrCode className="w-8 h-8" />
+                    </div>
+                    <span className="text-[11px] text-zinc-400 font-mono">
+                      Present at gate check-in
                     </span>
                   </div>
-                  <span className="text-[10px] text-[#ffb800] font-bold">
-                    [OFFLINE READY]
+                  <span className="text-xs text-emerald-400 font-mono font-medium">
+                    Offline Ready
                   </span>
                 </div>
               </div>
@@ -269,16 +268,16 @@ export function RegistrationModal({ event }: RegistrationModalProps) {
               <div className="flex gap-3">
                 <a
                   href="/dashboard"
-                  className="flex-1 py-3 bg-[#00ff66] text-[#090a0f] font-mono font-bold text-xs shadow-brutal-sm text-center"
+                  className="flex-1 py-3 rounded-lg bg-white text-zinc-950 font-semibold text-xs text-center hover:bg-zinc-200 transition-colors"
                 >
-                  GO TO MY DIGITAL HUB
+                  Go to My Passes
                 </a>
                 <Dialog.Close asChild>
                   <button
                     onClick={handleResetModal}
-                    className="px-4 py-3 bg-[#171924] border border-[#232635] text-[#8b93a7] font-mono text-xs hover:text-[#f4f5f8]"
+                    className="px-4 py-3 rounded-lg bg-zinc-900 border border-white/10 text-zinc-400 text-xs hover:text-white"
                   >
-                    DISMISS
+                    Done
                   </button>
                 </Dialog.Close>
               </div>

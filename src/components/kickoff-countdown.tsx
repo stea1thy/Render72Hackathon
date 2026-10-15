@@ -34,47 +34,47 @@ export function KickoffCountdown() {
   }, []);
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 sm:p-5 bg-[#10121a] border-2 border-[#00ff66] shadow-brutal-acid">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl bg-zinc-900/60 border border-white/10 backdrop-blur-md">
       {/* Label and pulse icon */}
-      <div className="flex flex-row items-center gap-2.5 text-xs font-mono text-[#00ff66] font-bold border-b sm:border-b-0 sm:border-r border-[#232635] pb-2 sm:pb-0 sm:pr-4">
-        <Clock className="w-4 h-4 text-[#00ff66] animate-pulse shrink-0" />
-        <span className="tracking-wider">KICKOFF TICKER:</span>
+      <div className="flex flex-row items-center gap-2.5 text-xs font-mono text-zinc-300 font-medium border-b sm:border-b-0 sm:border-r border-white/10 pb-2 sm:pb-0 sm:pr-4">
+        <Clock className="w-4 h-4 text-emerald-400 animate-pulse shrink-0" />
+        <span className="tracking-wider uppercase">Registration Closes:</span>
       </div>
 
       {/* Horizontal flex row of countdown unit boxes with gaps */}
       <div className="flex flex-row items-center gap-2 sm:gap-3 font-mono tabular-nums">
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#090a0f] border border-[#232635] min-w-[60px]">
-          <span className="font-extrabold text-xl sm:text-2xl text-[#f4f5f8] leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
+          <span className="font-semibold text-xl sm:text-2xl text-white leading-none">
             {timeLeft.days.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-[#8b93a7] font-semibold mt-1">DAYS</span>
+          <span className="text-[10px] text-zinc-500 font-medium mt-1">DAYS</span>
         </div>
 
-        <span className="text-[#00ff66] font-bold text-xl leading-none select-none">:</span>
+        <span className="text-zinc-600 font-bold text-xl leading-none select-none">:</span>
 
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#090a0f] border border-[#232635] min-w-[60px]">
-          <span className="font-extrabold text-xl sm:text-2xl text-[#f4f5f8] leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
+          <span className="font-semibold text-xl sm:text-2xl text-white leading-none">
             {timeLeft.hours.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-[#8b93a7] font-semibold mt-1">HOURS</span>
+          <span className="text-[10px] text-zinc-500 font-medium mt-1">HOURS</span>
         </div>
 
-        <span className="text-[#00ff66] font-bold text-xl leading-none select-none">:</span>
+        <span className="text-zinc-600 font-bold text-xl leading-none select-none">:</span>
 
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#090a0f] border border-[#232635] min-w-[60px]">
-          <span className="font-extrabold text-xl sm:text-2xl text-[#00ff66] leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
+          <span className="font-semibold text-xl sm:text-2xl text-white leading-none">
             {timeLeft.minutes.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-[#8b93a7] font-semibold mt-1">MINS</span>
+          <span className="text-[10px] text-zinc-500 font-medium mt-1">MINS</span>
         </div>
 
-        <span className="text-[#00ff66] font-bold text-xl leading-none select-none">:</span>
+        <span className="text-zinc-600 font-bold text-xl leading-none select-none">:</span>
 
-        <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#090a0f] border border-[#232635] min-w-[60px]">
-          <span className="font-extrabold text-xl sm:text-2xl text-[#00f0ff] leading-none">
+        <div className="flex flex-col items-center justify-center px-3 py-2 bg-zinc-950/80 border border-white/[0.06] rounded-lg min-w-[60px]">
+          <span className="font-semibold text-xl sm:text-2xl text-emerald-400 leading-none">
             {timeLeft.seconds.toString().padStart(2, "0")}
           </span>
-          <span className="text-[10px] text-[#8b93a7] font-semibold mt-1">SECS</span>
+          <span className="text-[10px] text-zinc-500 font-medium mt-1">SECS</span>
         </div>
       </div>
     </div>

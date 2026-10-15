@@ -17,14 +17,12 @@ test.describe("NexusFest Viewport & Overflow Checks", () => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
       await page.goto("http://localhost:3000/");
 
-      // Check document horizontal scroll
       const overflow = await page.evaluate(() => {
         return document.documentElement.scrollWidth > document.documentElement.clientWidth;
       });
 
       expect(overflow).toBe(false);
 
-      // Verify events catalog without overflow
       await page.goto("http://localhost:3000/events");
       const catalogOverflow = await page.evaluate(() => {
         return document.documentElement.scrollWidth > document.documentElement.clientWidth;
@@ -38,26 +36,23 @@ test.describe("NexusFest Keyboard Navigation & Modals", () => {
   test("supports skip-link, tab navigation and Ctrl+K command palette", async ({ page }) => {
     await page.goto("http://localhost:3000/");
 
-    // Press Tab to reveal skip link
     await page.keyboard.press("Tab");
     const skipLink = page.locator('a[href="#main-content"]');
     await expect(skipLink).toBeFocused();
 
-    // Trigger Ctrl+K
     await page.keyboard.press("Control+k");
-    const searchInput = page.locator('input[placeholder*="TYPE TO QUERY PROTOCOL"]');
+    const searchInput = page.locator('input[placeholder*="Search events"]');
     await expect(searchInput).toBeVisible();
 
-    // Press Escape to dismiss
     await page.keyboard.press("Escape");
     await expect(searchInput).not.toBeVisible();
   });
 });
 
-test.describe("NexusFest Designed 404 Sector", () => {
-  test("renders cyber-brutalist 404 for invalid event id", async ({ page }) => {
+test.describe("NexusFest 404 Page", () => {
+  test("renders clean 404 for invalid event id", async ({ page }) => {
     await page.goto("http://localhost:3000/events/non-existent-uuid-12345");
-    await expect(page.locator("text=SECTOR UNRESOLVED")).toBeVisible();
-    await expect(page.locator("text=BROWSE EVENTS CATALOG")).toBeVisible();
+    await expect(page.locator("text=Page Not Found")).toBeVisible();
+    await expect(page.locator("text=Browse Events")).toBeVisible();
   });
 });
