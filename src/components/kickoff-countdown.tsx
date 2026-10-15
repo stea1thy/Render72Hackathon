@@ -9,11 +9,11 @@ export function KickoffCountdown() {
     hours: number;
     minutes: number;
     seconds: number;
-  }>({ days: 27, hours: 9, minutes: 29, seconds: 45 });
+  }>({ days: 3, hours: 18, minutes: 12, seconds: 0 });
 
   useEffect(() => {
-    // Festival kickoff: October 16, 2026 10:00 IST
-    const targetDate = new Date("2026-10-16T10:00:00+05:30").getTime();
+    // Festival kickoff: October 19, 2026 18:00 IST (~3 days in future)
+    const targetDate = new Date("2026-10-19T18:00:00+05:30").getTime();
 
     const updateTimer = () => {
       const now = Date.now();

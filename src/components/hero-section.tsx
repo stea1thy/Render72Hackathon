@@ -278,7 +278,7 @@ function getOrBuildCityBuffer(CW: number, CH: number): HTMLCanvasElement {
 }
 
 export function HeroSection({ totalEvents = 30 }: { totalEvents?: number }) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 20, mins: 4, secs: 42 });
+  const [timeLeft, setTimeLeft] = useState({ days: 3, hours: 18, mins: 12, secs: 0 });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hoveredWord, setHoveredWord] = useState<"create" | "win" | null>(null);
 
@@ -311,7 +311,7 @@ export function HeroSection({ totalEvents = 30 }: { totalEvents?: number }) {
 
   // 2. Live Countdown Clock
   useEffect(() => {
-    const target = new Date("2026-10-16T14:00:00+05:30").getTime();
+    const target = new Date("2026-10-19T18:00:00+05:30").getTime();
     const updateClock = () => {
       const diff = Math.max(0, target - Date.now());
       setTimeLeft({
