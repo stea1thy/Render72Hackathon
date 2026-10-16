@@ -65,7 +65,7 @@ Tested across the full responsive matrix via automated Playwright checks:
 
 ---
 
-## 🚀 How to Run Locally
+## 🚀 How to Access The Website
 
 ```bash
 # 1. Install dependencies
@@ -84,3 +84,6 @@ npx playwright test
 pnpm start -p 3000
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+Or Visit https://render72hackathon.sivakumarshashank.workers.dev/ 
+
